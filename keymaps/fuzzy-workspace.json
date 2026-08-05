@@ -1,0 +1,10 @@
+{
+  "atom-workspace": {
+    "ctrl-alt-p": "fuzzy-workspace:toggle"
+  },
+  ".fuzzy-workspace atom-text-editor[mini]": {
+    "alt-delete": "fuzzy-workspace:close-selected-item",
+    "alt-c": "fuzzy-workspace:copy-selected-path",
+    "alt-s": "fuzzy-workspace:query-selection"
+  }
+}
