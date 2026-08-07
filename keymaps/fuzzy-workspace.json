@@ -1,6 +1,9 @@
 {
+  // cmdorctrl-alt-p rather than a raw ctrl-alt-p, which has no macOS story, and
+  // it keeps this next to fuzzy-files' cmdorctrl-p. The three fuzzy siblings
+  // used three different modifier schemes for one verb.
   "atom-workspace": {
-    "ctrl-alt-p": "fuzzy-workspace:toggle"
+    "cmdorctrl-alt-p": "fuzzy-workspace:toggle"
   },
   ".fuzzy-workspace atom-text-editor[mini]": {
     "alt-delete": "fuzzy-workspace:close-selected-item",
