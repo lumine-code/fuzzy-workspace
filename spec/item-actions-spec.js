@@ -2,17 +2,17 @@ describe("fuzzy-workspace item actions", () => {
   let main;
 
   beforeEach(async () => {
-    jasmine.attachToDOM(atom.views.getView(atom.workspace));
+    jasmine.attachToDOM(lumine.views.getView(lumine.workspace));
     // The package activates on its commands, so dispatch one to trigger it;
     // activation also loads the package keymap the actions list reads.
-    const activation = atom.packages.activatePackage("fuzzy-workspace");
-    atom.commands.dispatch(atom.views.getView(atom.workspace), "fuzzy-workspace:toggle");
+    const activation = lumine.packages.activatePackage("fuzzy-workspace");
+    lumine.commands.dispatch(lumine.views.getView(lumine.workspace), "fuzzy-workspace:toggle");
     main = (await activation).mainModule;
     main.selectList.hide();
   });
 
   afterEach(async () => {
-    await atom.packages.deactivatePackage("fuzzy-workspace");
+    await lumine.packages.deactivatePackage("fuzzy-workspace");
   });
 
   it("derives its actions from the command registrations and the keymap", () => {
@@ -46,7 +46,7 @@ describe("fuzzy-workspace item actions", () => {
     await main.selectList.showItemActions();
 
     expect(main.selectList.itemActionsList.isVisible()).toBeTruthy();
-    expect(atom.workspace.getModalTrail()).toEqual(["Workspace", "Actions"]);
+    expect(lumine.workspace.getModalTrail()).toEqual(["Workspace", "Actions"]);
     // The actions list wears the package class, so the package keymap
     // resolves action keystrokes inside it too.
     expect(main.selectList.itemActionsList.element.classList.contains("fuzzy-workspace")).toBe(

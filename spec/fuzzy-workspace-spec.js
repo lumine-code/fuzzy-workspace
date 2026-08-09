@@ -12,7 +12,7 @@ describe("fuzzy-workspace", () => {
   // package returns a descriptor and decorates the result in didRender, and
   // neither half is exercised by returning the descriptor alone.
   function renderRow(item) {
-    list = atom.workspace.buildSelectList({
+    list = lumine.workspace.buildSelectList({
       items: [item],
       filterKeyForItem: (i) => i.title,
       elementForItem: (i, options) => main.elementForItem(i, options),
@@ -24,8 +24,8 @@ describe("fuzzy-workspace", () => {
     let editor, pane;
 
     beforeEach(async () => {
-      editor = await atom.workspace.open();
-      pane = atom.workspace.getActivePane();
+      editor = await lumine.workspace.open();
+      pane = lumine.workspace.getActivePane();
     });
 
     it("renders the title over the container as a two-line row", () => {
@@ -92,14 +92,14 @@ describe("fuzzy-workspace", () => {
     });
 
     it("highlights the matched characters of the title", async () => {
-      list = atom.workspace.buildSelectList({
+      list = lumine.workspace.buildSelectList({
         items: [{ paneItem: editor, pane, container: "Center", active: false, title: "untitled" }],
         filterKeyForItem: (i) => i.title,
         elementForItem: (i, options) => main.elementForItem(i, options),
       });
 
       list.refs.queryEditor.setText("unt");
-      await atom.views.getNextUpdatePromise();
+      await lumine.views.getNextUpdatePromise();
 
       const matched = list.element.querySelectorAll(".character-match");
       expect(matched.length).toBeGreaterThan(0);

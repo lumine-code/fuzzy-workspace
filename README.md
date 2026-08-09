@@ -16,7 +16,7 @@ To install `fuzzy-workspace` search for _fuzzy-workspace_ in the Install pane of
 
 ## Commands
 
-Commands available in `atom-workspace`:
+Commands available in `lumine-workspace`:
 
 - `fuzzy-workspace:toggle`: toggle the fuzzy workspace panel.
 
