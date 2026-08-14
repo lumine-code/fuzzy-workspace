@@ -12,7 +12,7 @@ Quickly find and focus any open item across the workspace.
 
 ## Installation
 
-To install `fuzzy-workspace` search for _fuzzy-workspace_ in the Install pane of the Lumine settings or run `lumine --install lumine-code/fuzzy-workspace`.
+To install `fuzzy-workspace` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/fuzzy-workspace`.
 
 ## Commands
 
