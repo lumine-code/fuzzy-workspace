@@ -36,8 +36,18 @@
   },
   "activationCommands": {
     "lumine-workspace": [
-      "fuzzy-workspace:toggle"
+      "fuzzy-workspace:toggle",
+      "fuzzy-workspace:clear-recent"
     ]
+  },
+  "configSchema": {
+    "recentCount": {
+      "title": "Number of Recent Items",
+      "description": "How many recently focused items to keep at the top of the list.",
+      "type": "integer",
+      "minimum": 0,
+      "default": 10
+    }
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
