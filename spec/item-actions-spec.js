@@ -21,7 +21,7 @@ describe("fuzzy-workspace item actions", () => {
 
     const closeItem = byCommand.get("fuzzy-workspace:close-selected-item");
     expect(closeItem.name).toBe("Close Selected Item");
-    expect(closeItem.description).toBe("Close the item in its pane, keeping the list open");
+    expect(closeItem.description).toBe("Close the item in its pane, keeping the list open.");
     expect(closeItem.keystrokes).toEqual(["alt-delete"]);
 
     expect(byCommand.get("fuzzy-workspace:copy-selected-path").keystrokes).toEqual(["alt-c"]);
