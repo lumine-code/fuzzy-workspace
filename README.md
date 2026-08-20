@@ -7,7 +7,7 @@ Quickly find and focus any open item across the workspace.
 - **Fast fuzzy search**: ranks open items by match quality with a smart scoring algorithm.
 - **Full workspace coverage**: lists every open pane item in the workspace center and the left, right, and bottom docks.
 - **Focus on confirm**: reveals an item's dock if hidden, activates its pane, and focuses it.
-- **Recently focused first**: keeps the items you jumped to at the top of the unfiltered list, ruled off from the rest.
+- **Recently used first**: keeps the items you acted on at the top of the unfiltered list, ruled off from the rest.
 - **Item actions**: closes an item or copies its path without leaving the keyboard.
 - **Icons**: shows an icon per item, derived from the item icon name or its file path.
 
@@ -20,7 +20,7 @@ To install `fuzzy-workspace` search for it in the Install pane of the Lumine set
 Commands available in `lumine-workspace`:
 
 - `fuzzy-workspace:toggle`: toggle the fuzzy workspace panel,
-- `fuzzy-workspace:clear-recent`: forget the recently focused items.
+- `fuzzy-workspace:clear-recent`: forget the recently used items.
 
 Commands available in `.fuzzy-workspace`, all listed with their keybindings in the item-actions list (F12):
 

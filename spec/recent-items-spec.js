@@ -62,6 +62,26 @@ describe("fuzzy-workspace recent items", () => {
     expect(main.serialize()).toEqual({ recentlyUsed: [alpha] });
   });
 
+  it("records an item for every action over it, not only a focus", async () => {
+    spyOn(lumine.clipboard, "write");
+    const selectList = await showList();
+    await selectList.selectItem(itemFor(beta));
+
+    main.performAction("copy-path");
+
+    expect(lumine.clipboard.write).toHaveBeenCalledWith(beta);
+    expect(main.recentlyUsed).toEqual([beta]);
+  });
+
+  it("records an item it closed, since reopening brings it back", async () => {
+    const selectList = await showList();
+    await selectList.selectItem(itemFor(beta));
+
+    main.performAction("close");
+
+    expect(main.recentlyUsed).toEqual([beta]);
+  });
+
   it("never records an item that has no URI", async () => {
     await showList();
     const untitled = { uri: undefined, title: "untitled" };
