@@ -27,7 +27,8 @@ Commands available in `.fuzzy-workspace`, all listed with their keybindings in t
 - `fuzzy-workspace:focus-selected-item`: focus the selected item, revealing its dock and pane,
 - `fuzzy-workspace:close-selected-item`: close the selected item without leaving the list,
 - `fuzzy-workspace:copy-selected-path`: copy the path of the selected item,
-- `fuzzy-workspace:query-selection`: use the editor selection as the query.
+- `fuzzy-workspace:query-selection`: use the editor selection as the query,
+- `fuzzy-workspace:remove-from-recent`: drop the selected item from the recent section, offered only while a recent one is selected.
 
 ## Customization
 

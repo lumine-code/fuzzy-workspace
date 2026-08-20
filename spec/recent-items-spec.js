@@ -91,6 +91,36 @@ describe("fuzzy-workspace recent items", () => {
     expect(main.recentlyUsed).toEqual([]);
   });
 
+  it("drops one item from the section without closing the list", async () => {
+    await showList();
+    main.recordRecent(itemFor(beta));
+    main.recordRecent(itemFor(alpha));
+    const selectList = await showList();
+    await selectList.selectItem(itemFor(alpha));
+
+    lumine.commands.dispatch(selectList.element, "fuzzy-workspace:remove-from-recent");
+    await lumine.views.getNextUpdatePromise();
+
+    expect(main.recentlyUsed).toEqual([beta]);
+    expect(selectList.isVisible()).toBe(true);
+    expect(selectList.getSelectedItem().uri).toBe(alpha);
+  });
+
+  it("offers the action only while a recent item is selected", async () => {
+    await showList();
+    main.recordRecent(itemFor(alpha));
+    const selectList = await showList();
+
+    await selectList.selectItem(itemFor(alpha));
+    let actions = selectList.itemActions().map((action) => action.command);
+    expect(actions).toContain("fuzzy-workspace:remove-from-recent");
+
+    await selectList.selectItem(itemFor(beta));
+    actions = selectList.itemActions().map((action) => action.command);
+    expect(actions).not.toContain("fuzzy-workspace:remove-from-recent");
+    expect(actions).toContain("fuzzy-workspace:copy-selected-path");
+  });
+
   it("stands the section down under a query", async () => {
     await showList();
     main.recordRecent(itemFor(alpha));
