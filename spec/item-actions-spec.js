@@ -16,6 +16,7 @@ describe("fuzzy-workspace item actions", () => {
   });
 
   it("derives its actions from the command registrations and the keymap", () => {
+    spyOn(main.selectList, "getSelectedItem").and.returnValue({ uri: "file:///selected" });
     const actions = main.selectList.itemActions();
     const byCommand = new Map(actions.map((action) => [action.command, action]));
 
@@ -25,9 +26,7 @@ describe("fuzzy-workspace item actions", () => {
     expect(closeItem.keystrokes).toEqual(["alt-delete"]);
 
     expect(byCommand.get("fuzzy-workspace:copy-selected-path").keystrokes).toEqual(["alt-c"]);
-    // Confirming is chrome (core:confirm), so the focus action carries no
-    // package binding of its own.
-    expect(byCommand.get("fuzzy-workspace:focus-selected-item").keystrokes).toEqual([]);
+    expect(byCommand.get("fuzzy-workspace:focus-selected-item").keystrokes).toEqual(["enter"]);
 
     // Every action explains itself with more than a restated title.
     for (const action of actions) {
@@ -40,7 +39,25 @@ describe("fuzzy-workspace item actions", () => {
     expect(byCommand.has("fuzzy-workspace:toggle")).toBe(false);
   });
 
+  it("offers clear recent without a match only while recent items exist", () => {
+    spyOn(main.selectList, "getSelectedItem").and.returnValue(null);
+    const hasClear = () =>
+      main.selectList
+        .itemActions()
+        .some(({ command }) => command === "fuzzy-workspace:clear-recent");
+
+    expect(hasClear()).toBe(false);
+    main.recentlyUsed = ["file:///selected"];
+    expect(hasClear()).toBe(true);
+    expect(
+      main.selectList
+        .itemActions()
+        .find(({ command }) => command === "fuzzy-workspace:clear-recent").scope,
+    ).toBe("list");
+  });
+
   it("shows the actions as a flow step and runs one against the master list", async () => {
+    spyOn(main.selectList, "getSelectedItem").and.returnValue({ uri: "file:///selected" });
     main.selectList.show();
 
     await main.selectList.showItemActions();
