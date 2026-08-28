@@ -22,7 +22,7 @@ Commands available in `lumine-workspace`:
 - `fuzzy-workspace:toggle`: toggle the fuzzy workspace panel,
 - `fuzzy-workspace:clear-recent`: forget the recently used items.
 
-Commands available in `.fuzzy-workspace`, all listed with their keybindings in the item-actions list (F12):
+Commands available in `.fuzzy-workspace`:
 
 - `fuzzy-workspace:focus-selected-item`: focus the selected item, revealing its dock and pane,
 - `fuzzy-workspace:close-selected-item`: close the selected item without leaving the list,
