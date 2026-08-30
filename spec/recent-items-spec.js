@@ -56,10 +56,13 @@ describe("fuzzy-workspace recent items", () => {
     const selectList = await showList();
     await selectList.selectItem(itemFor(alpha));
 
-    main.performAction("focus");
+    const open = spyOn(lumine.workspace, "open").and.callThrough();
+    const item = itemFor(alpha);
+    await main.performAction("focus");
 
     expect(main.recentlyUsed).toEqual([alpha]);
     expect(main.serialize()).toEqual({ recentlyUsed: [alpha] });
+    expect(open).toHaveBeenCalledWith(item.paneItem, { searchAllPanes: true });
   });
 
   it("records an item for every action over it, not only a focus", async () => {
