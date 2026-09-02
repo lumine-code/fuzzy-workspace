@@ -129,7 +129,7 @@ describe("fuzzy-workspace recent items", () => {
     main.recordRecent(itemFor(alpha));
     const selectList = await showList();
 
-    selectList.refs.queryEditor.setText("beta");
+    selectList.getQueryEditor().setText("beta");
     await lumine.views.getNextUpdatePromise();
 
     expect(selectList.element.querySelector(".select-list-separator")).toBeNull();

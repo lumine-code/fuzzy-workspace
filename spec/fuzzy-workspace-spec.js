@@ -98,7 +98,7 @@ describe("fuzzy-workspace", () => {
         elementForItem: (i, options) => main.elementForItem(i, options),
       });
 
-      list.refs.queryEditor.setText("unt");
+      list.getQueryEditor().setText("unt");
       await lumine.views.getNextUpdatePromise();
 
       const matched = list.element.querySelectorAll(".character-match");
