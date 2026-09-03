@@ -8,7 +8,7 @@ describe("fuzzy-workspace item actions", () => {
     const activation = lumine.packages.activatePackage("fuzzy-workspace");
     lumine.commands.dispatch(lumine.views.getView(lumine.workspace), "fuzzy-workspace:toggle");
     main = (await activation).mainModule;
-    main.selectList.hide();
+    main.selectListHost.hide();
   });
 
   afterEach(async () => {
@@ -75,10 +75,10 @@ describe("fuzzy-workspace item actions", () => {
       paneItem: {},
       pane: {},
     };
-    await main.selectList.show();
+    await main.selectListHost.show();
     await main.selectList.update({ items: [selected] });
 
-    expect(await main.selectList.showActions()).toBe(true);
+    expect(await main.selectListHost.showActions()).toBe(true);
 
     expect(lumine.workspace.getModalTrail()).toEqual(["Workspace", "Actions"]);
     lumine.workspace.popModal();
@@ -89,6 +89,6 @@ describe("fuzzy-workspace item actions", () => {
     expect(spy).toHaveBeenCalled();
     expect(spy.calls.mostRecent().args[0]).toBe("close");
     expect(spy.calls.mostRecent().args[1].item).toBe(selected);
-    expect(main.selectList.isVisible()).toBeTruthy();
+    expect(main.selectListHost.isVisible()).toBeTruthy();
   });
 });

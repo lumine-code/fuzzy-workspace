@@ -19,7 +19,7 @@ describe("fuzzy-workspace recent items", () => {
     const opening = lumine.commands.dispatch(workspaceElement, "fuzzy-workspace:toggle");
     main = (await activation).mainModule;
     await opening;
-    main.selectList.hide();
+    main.selectListHost.hide();
     await main.selectList.clearRecentItems();
   });
 
@@ -28,7 +28,7 @@ describe("fuzzy-workspace recent items", () => {
   });
 
   async function showList() {
-    await main.selectList.show();
+    await main.selectListHost.show();
     return main.selectList;
   }
 
@@ -108,7 +108,7 @@ describe("fuzzy-workspace recent items", () => {
     await lumine.views.getNextUpdatePromise();
 
     expect(main.recentlyUsed).toEqual([beta]);
-    expect(selectList.isVisible()).toBe(true);
+    expect(main.selectListHost.isVisible()).toBe(true);
     expect(selectList.getSelectedItem().uri).toBe(alpha);
   });
 

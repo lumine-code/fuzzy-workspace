@@ -100,6 +100,7 @@ describe("fuzzy-workspace", () => {
         renderItem: (i, options) => main.renderItem(i, options),
       });
 
+      list.getElement();
       list.getQueryEditor().setText("unt");
       await lumine.views.getNextUpdatePromise();
 
