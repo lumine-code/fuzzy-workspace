@@ -15,9 +15,19 @@ describe("fuzzy-workspace item actions", () => {
     await lumine.packages.deactivatePackage("fuzzy-workspace");
   });
 
-  it("derives its actions from the command registrations and the keymap", () => {
-    spyOn(main.selectList, "getSelectedItem").and.returnValue({ uri: "file:///selected" });
-    const actions = main.selectList.itemActions();
+  it("describes its explicit actions with command metadata and keybindings", async () => {
+    await main.selectList.update({
+      items: [
+        {
+          uri: "file:///selected",
+          title: "selected",
+          container: "Center",
+          paneItem: {},
+          pane: {},
+        },
+      ],
+    });
+    const actions = main.selectList.getAvailableActions();
     const byCommand = new Map(actions.map((action) => [action.command, action]));
 
     const closeItem = byCommand.get("fuzzy-workspace:close-selected-item");
@@ -27,6 +37,7 @@ describe("fuzzy-workspace item actions", () => {
 
     expect(byCommand.get("fuzzy-workspace:copy-selected-path").keystrokes).toEqual(["alt-c"]);
     expect(byCommand.get("fuzzy-workspace:focus-selected-item").keystrokes).toEqual(["enter"]);
+    expect(byCommand.get("fuzzy-workspace:close-selected-item").group).toBe("Manage");
 
     // Every action explains itself with more than a restated title.
     for (const action of actions) {
@@ -39,46 +50,45 @@ describe("fuzzy-workspace item actions", () => {
     expect(byCommand.has("fuzzy-workspace:toggle")).toBe(false);
   });
 
-  it("offers clear recent without a match only while recent items exist", () => {
-    spyOn(main.selectList, "getSelectedItem").and.returnValue(null);
+  it("offers the core recent actions only while recent items exist", async () => {
+    main.selectList.selectNone();
     const hasClear = () =>
       main.selectList
-        .itemActions()
-        .some(({ command }) => command === "fuzzy-workspace:clear-recent");
+        .getAvailableActions()
+        .some(({ command }) => command === "select-list:clear-recents");
 
     expect(hasClear()).toBe(false);
-    main.recentlyUsed = ["file:///selected"];
+    await main.selectList.setRecentItemIds(["file:///selected"]);
     expect(hasClear()).toBe(true);
     expect(
       main.selectList
-        .itemActions()
-        .find(({ command }) => command === "fuzzy-workspace:clear-recent").scope,
-    ).toBe("list");
+        .getAvailableActions()
+        .find(({ command }) => command === "select-list:clear-recents").context,
+    ).toBe("dialog");
   });
 
-  it("shows the actions as a flow step and runs one against the master list", async () => {
-    spyOn(main.selectList, "getSelectedItem").and.returnValue({ uri: "file:///selected" });
-    main.selectList.show();
+  it("shows the shared action palette as a flow step and runs against captured context", async () => {
+    const selected = {
+      uri: "file:///selected",
+      title: "selected",
+      container: "Center",
+      paneItem: {},
+      pane: {},
+    };
+    await main.selectList.show();
+    await main.selectList.update({ items: [selected] });
 
-    await main.selectList.showItemActions();
+    expect(await main.selectList.showActions()).toBe(true);
 
-    expect(main.selectList.itemActionsList.isVisible()).toBeTruthy();
     expect(lumine.workspace.getModalTrail()).toEqual(["Workspace", "Actions"]);
-    // The actions list wears the package class, so the package keymap
-    // resolves action keystrokes inside it too.
-    expect(main.selectList.itemActionsList.element.classList.contains("fuzzy-workspace")).toBe(
-      true,
-    );
+    lumine.workspace.popModal();
 
     const spy = spyOn(main, "performAction");
-    const index = main.selectList.itemActionsList.items.findIndex(
-      (item) => item.command === "fuzzy-workspace:close-selected-item",
-    );
-    main.selectList.itemActionsList.selectIndex(index);
-    main.selectList.itemActionsList.confirmSelection();
+    await main.selectList.runAction("fuzzy-workspace:close-selected-item");
 
-    expect(spy).toHaveBeenCalledWith("close");
+    expect(spy).toHaveBeenCalled();
+    expect(spy.calls.mostRecent().args[0]).toBe("close");
+    expect(spy.calls.mostRecent().args[1].item).toBe(selected);
     expect(main.selectList.isVisible()).toBeTruthy();
-    expect(main.selectList.itemActionsList.isVisible()).toBeFalsy();
   });
 });

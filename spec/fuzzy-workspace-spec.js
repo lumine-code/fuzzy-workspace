@@ -14,13 +14,14 @@ describe("fuzzy-workspace", () => {
   function renderRow(item) {
     list = lumine.workspace.buildSelectList({
       items: [item],
-      filterKeyForItem: (i) => i.title,
-      elementForItem: (i, options) => main.elementForItem(i, options),
+      getItemId: () => "item",
+      search: { getFilterText: (i) => i.title },
+      renderItem: (i, options) => main.renderItem(i, options),
     });
-    return list.element.querySelector("li");
+    return list.getElement().querySelector("li");
   }
 
-  describe("elementForItem", () => {
+  describe("renderItem", () => {
     let editor, pane;
 
     beforeEach(async () => {
@@ -94,14 +95,15 @@ describe("fuzzy-workspace", () => {
     it("highlights the matched characters of the title", async () => {
       list = lumine.workspace.buildSelectList({
         items: [{ paneItem: editor, pane, container: "Center", active: false, title: "untitled" }],
-        filterKeyForItem: (i) => i.title,
-        elementForItem: (i, options) => main.elementForItem(i, options),
+        getItemId: () => "item",
+        search: { getFilterText: (i) => i.title },
+        renderItem: (i, options) => main.renderItem(i, options),
       });
 
       list.getQueryEditor().setText("unt");
       await lumine.views.getNextUpdatePromise();
 
-      const matched = list.element.querySelectorAll(".character-match");
+      const matched = list.getElement().querySelectorAll(".character-match");
       expect(matched.length).toBeGreaterThan(0);
       expect(matched[0].textContent).toBe("unt");
     });

@@ -16,23 +16,19 @@ describe("fuzzy-workspace recent items", () => {
     await lumine.workspace.open(beta);
 
     const activation = lumine.packages.activatePackage("fuzzy-workspace");
-    lumine.commands.dispatch(workspaceElement, "fuzzy-workspace:toggle");
+    const opening = lumine.commands.dispatch(workspaceElement, "fuzzy-workspace:toggle");
     main = (await activation).mainModule;
+    await opening;
     main.selectList.hide();
-    main.clearRecent();
+    await main.selectList.clearRecentItems();
   });
 
   afterEach(async () => {
     await lumine.packages.deactivatePackage("fuzzy-workspace");
   });
 
-  // `show` pushes the rows through `willShow`, but only schedules an etch
-  // update when something actually changed — so awaiting the next update
-  // promise can hang. A no-op update always resolves and always lands after
-  // whatever `willShow` queued.
   async function showList() {
-    main.selectList.show();
-    await main.selectList.update({});
+    await main.selectList.show();
     return main.selectList;
   }
 
@@ -42,12 +38,12 @@ describe("fuzzy-workspace recent items", () => {
 
   it("keeps the items it focused at the top, ruled off from the rest", async () => {
     await showList();
-    main.recordRecent(itemFor(alpha));
+    await main.selectList.recordRecentItem(itemFor(alpha));
 
     const selectList = await showList();
 
-    expect(selectList.items[0].uri).toBe(alpha);
-    const separator = selectList.element.querySelector(".select-list-separator");
+    expect(selectList.getDisplayedItems()[0].uri).toBe(alpha);
+    const separator = selectList.getElement().querySelector(".select-list-separator");
     expect(separator.previousElementSibling.textContent).toContain("alpha");
     expect(separator.nextElementSibling.textContent).not.toContain("alpha");
   });
@@ -58,7 +54,7 @@ describe("fuzzy-workspace recent items", () => {
 
     const open = spyOn(lumine.workspace, "open").and.callThrough();
     const item = itemFor(alpha);
-    await main.performAction("focus");
+    await selectList.runAction("fuzzy-workspace:focus-selected-item");
 
     expect(main.recentlyUsed).toEqual([alpha]);
     expect(main.serialize()).toEqual({ recentlyUsed: [alpha] });
@@ -70,7 +66,7 @@ describe("fuzzy-workspace recent items", () => {
     const selectList = await showList();
     await selectList.selectItem(itemFor(beta));
 
-    main.performAction("copy-path");
+    await selectList.runAction("fuzzy-workspace:copy-selected-path");
 
     expect(lumine.clipboard.write).toHaveBeenCalledWith(beta);
     expect(main.recentlyUsed).toEqual([beta]);
@@ -80,28 +76,35 @@ describe("fuzzy-workspace recent items", () => {
     const selectList = await showList();
     await selectList.selectItem(itemFor(beta));
 
-    main.performAction("close");
+    await selectList.runAction("fuzzy-workspace:close-selected-item");
 
     expect(main.recentlyUsed).toEqual([beta]);
   });
 
   it("never records an item that has no URI", async () => {
     await showList();
-    const untitled = { uri: undefined, title: "untitled" };
-
-    main.recordRecent(untitled);
+    const untitled = {
+      uri: undefined,
+      title: "untitled",
+      container: "Center",
+      paneItem: {},
+      pane: {},
+    };
+    await main.selectList.update({ items: [untitled] });
+    spyOn(lumine.workspace, "open").and.resolveTo(null);
+    await main.selectList.runAction("fuzzy-workspace:focus-selected-item");
 
     expect(main.recentlyUsed).toEqual([]);
   });
 
   it("drops one item from the section without closing the list", async () => {
     await showList();
-    main.recordRecent(itemFor(beta));
-    main.recordRecent(itemFor(alpha));
+    await main.selectList.recordRecentItem(itemFor(beta));
+    await main.selectList.recordRecentItem(itemFor(alpha));
     const selectList = await showList();
     await selectList.selectItem(itemFor(alpha));
 
-    lumine.commands.dispatch(selectList.element, "fuzzy-workspace:remove-from-recent");
+    await selectList.runAction("select-list:remove-recent");
     await lumine.views.getNextUpdatePromise();
 
     expect(main.recentlyUsed).toEqual([beta]);
@@ -111,49 +114,49 @@ describe("fuzzy-workspace recent items", () => {
 
   it("offers the action only while a recent item is selected", async () => {
     await showList();
-    main.recordRecent(itemFor(alpha));
+    await main.selectList.recordRecentItem(itemFor(alpha));
     const selectList = await showList();
 
     await selectList.selectItem(itemFor(alpha));
-    let actions = selectList.itemActions().map((action) => action.command);
-    expect(actions).toContain("fuzzy-workspace:remove-from-recent");
+    let actions = selectList.getAvailableActions().map((action) => action.command);
+    expect(actions).toContain("select-list:remove-recent");
 
     await selectList.selectItem(itemFor(beta));
-    actions = selectList.itemActions().map((action) => action.command);
-    expect(actions).not.toContain("fuzzy-workspace:remove-from-recent");
+    actions = selectList.getAvailableActions().map((action) => action.command);
+    expect(actions).not.toContain("select-list:remove-recent");
     expect(actions).toContain("fuzzy-workspace:copy-selected-path");
   });
 
   it("stands the section down under a query", async () => {
     await showList();
-    main.recordRecent(itemFor(alpha));
+    await main.selectList.recordRecentItem(itemFor(alpha));
     const selectList = await showList();
 
     selectList.getQueryEditor().setText("beta");
     await lumine.views.getNextUpdatePromise();
 
-    expect(selectList.element.querySelector(".select-list-separator")).toBeNull();
+    expect(selectList.getElement().querySelector(".select-list-separator")).toBeNull();
   });
 
   it("caps the list at the configured count", async () => {
     await showList();
     lumine.config.set("fuzzy-workspace.recentCount", 1);
 
-    main.recordRecent(itemFor(alpha));
-    main.recordRecent(itemFor(beta));
+    await main.selectList.recordRecentItem(itemFor(alpha));
+    await main.selectList.recordRecentItem(itemFor(beta));
 
     expect(main.recentlyUsed).toEqual([beta]);
   });
 
   it("forgets everything on clear-recent", async () => {
     await showList();
-    main.recordRecent(itemFor(alpha));
+    await main.selectList.recordRecentItem(itemFor(alpha));
     const selectList = await showList();
 
-    lumine.commands.dispatch(workspaceElement, "fuzzy-workspace:clear-recent");
+    await lumine.commands.dispatch(workspaceElement, "fuzzy-workspace:clear-recent");
     await lumine.views.getNextUpdatePromise();
 
     expect(main.recentlyUsed).toEqual([]);
-    expect(selectList.element.querySelector(".select-list-separator")).toBeNull();
+    expect(selectList.getElement().querySelector(".select-list-separator")).toBeNull();
   });
 });
