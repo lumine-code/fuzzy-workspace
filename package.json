@@ -34,12 +34,6 @@
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
-  "activationCommands": {
-    "lumine-workspace": [
-      "fuzzy-workspace:toggle",
-      "fuzzy-workspace:clear-recent"
-    ]
-  },
   "configSchema": {
     "recentCount": {
       "title": "Number of Recent Items",
