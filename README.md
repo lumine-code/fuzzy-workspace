@@ -2,6 +2,8 @@
 
 Quickly find and focus any open item across the workspace.
 
+Fork of [pulsar-edit/pulsar](https://github.com/pulsar-edit/pulsar) (`packages/fuzzy-finder`).
+
 ## Features
 
 - **Fast fuzzy search**: ranks open items by match quality with a smart scoring algorithm.
