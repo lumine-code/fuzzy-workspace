@@ -32,6 +32,8 @@ Commands available in `.fuzzy-workspace`:
 - `fuzzy-workspace:query-selection`: use the editor selection as the query,
 - `fuzzy-workspace:remove-from-recent`: drop the selected item from the recent section, offered only while a recent one is selected.
 
+Item actions use the item's current path and pane, even if it moved or was saved under another name after the list opened. A changed path is also used when storing its recent entry.
+
 ## Customization
 
 Resize the results panel by adding CSS to your `styles.css`:
