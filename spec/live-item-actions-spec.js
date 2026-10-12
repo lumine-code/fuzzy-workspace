@@ -46,7 +46,7 @@ describe("Fuzzy Workspace live item actions", () => {
 
   it("closes the listed item after it moves to another pane", async () => {
     const originalPane = lumine.workspace.paneForItem(editor);
-    const movedPane = originalPane.splitRight({ copyActiveItem: false });
+    const movedPane = originalPane.splitRight();
     originalPane.moveItemToPane(editor, movedPane, 0);
     expect(lumine.workspace.paneForItem(editor)).toBe(movedPane);
     expect(item.pane).toBe(originalPane);

@@ -37,7 +37,12 @@ describe("Fuzzy Workspace views of the same file", () => {
   it("lists and focuses both editor instances in split panes", async () => {
     const first = await openFile();
     const firstPane = lumine.workspace.paneForItem(first);
-    const secondPane = firstPane.splitRight({ copyActiveItem: true });
+    const secondPane = (
+      await lumine.workspace.copyPaneItem(firstPane.getActiveItem(), {
+        sourcePane: firstPane,
+        splitDirection: "right",
+      })
+    ).pane;
     const second = secondPane.getActiveItem();
     expect(second).not.toBe(first);
     expect(second.getURI()).toBe(first.getURI());
@@ -65,10 +70,12 @@ describe("Fuzzy Workspace views of the same file", () => {
 
   it("persists the file URI and keeps the other view reachable after closing one view", async () => {
     const first = await openFile();
-    const second = lumine.workspace
-      .paneForItem(first)
-      .splitRight({ copyActiveItem: true })
-      .getActiveItem();
+    const second = (
+      await lumine.workspace.copyPaneItem(lumine.workspace.paneForItem(first).getActiveItem(), {
+        sourcePane: lumine.workspace.paneForItem(first),
+        splitDirection: "right",
+      })
+    ).pane.getActiveItem();
     await main.ensureSelectList().show();
     const item = main.selectList.getItems().find((entry) => entry.paneItem === second);
     expect(item).toBeDefined();
