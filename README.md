@@ -13,6 +13,8 @@ Fork of [pulsar-edit/pulsar](https://github.com/pulsar-edit/pulsar) (`packages/f
 - **Item actions**: closes an item or copies its path without leaving the keyboard.
 - **Icons**: shows an icon per item, derived from the item icon name or its file path.
 
+![Switch between files open in the workspace.](.github/demo.png)
+
 ## Installation
 
 To install `fuzzy-workspace` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/fuzzy-workspace`.

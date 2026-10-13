@@ -1,0 +1,16 @@
+{
+  "title": "fuzzy-workspace",
+  "description": "Switch between files open in the workspace.",
+  "recordedOn": "2026-10-13",
+  "sourceRevision": "a36078b1c8df23d84aad9016a9e75f3f8d0af1a3",
+  "mode": "normal",
+  "fontSettings": "default",
+  "images": [
+    {
+      "file": "demo.png",
+      "label": "Switch between files open in the workspace.",
+      "width": 1100,
+      "height": 720
+    }
+  ]
+}
