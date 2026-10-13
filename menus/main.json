@@ -13,6 +13,15 @@
           ]
         }
       ]
+    },
+    {
+      "label": "Search",
+      "submenu": [
+        {
+          "label": "Find Open Item…",
+          "command": "fuzzy-workspace:toggle"
+        }
+      ]
     }
   ]
 }
