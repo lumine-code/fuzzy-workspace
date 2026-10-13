@@ -19,7 +19,9 @@
       "submenu": [
         {
           "label": "Find Open Item…",
-          "command": "fuzzy-workspace:toggle"
+          "command": "fuzzy-workspace:toggle",
+          "group": "navigation",
+          "order": 10
         }
       ]
     }
