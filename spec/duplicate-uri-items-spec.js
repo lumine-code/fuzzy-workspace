@@ -25,7 +25,13 @@ describe("Fuzzy Workspace views of the same file", () => {
     if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
       throw new Error("Owned scratch escaped the temporary root");
     }
-    fs.rmSync(scratch, { recursive: true, force: true });
+    // Windows can briefly retain delete-pending entries after watcher teardown.
+    await fs.promises.rm(scratch, {
+      recursive: true,
+      force: true,
+      maxRetries: 5,
+      retryDelay: 100,
+    });
   });
 
   async function openFile(name = "shared.txt") {
