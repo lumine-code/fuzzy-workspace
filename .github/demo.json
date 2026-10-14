@@ -1,16 +1,61 @@
 {
   "title": "fuzzy-workspace",
   "description": "Switch between files open in the workspace.",
-  "recordedOn": "2026-10-13",
-  "sourceRevision": "a36078b1c8df23d84aad9016a9e75f3f8d0af1a3",
+  "recordedOn": "2026-10-14",
+  "sourceRevision": "4e832fa669175e357a2f217df87adae7a10ddb51",
+  "themeSourceRevision": "14a69683b0e3238e2bc128fbfae3866c1e4ee9c6",
   "mode": "normal",
   "fontSettings": "default",
+  "scenario": "demo.js",
+  "recipeHash": "e56e5cc6f893f166a1df8ceadfc97017b63b8a3219a59f0924459d82840575ae",
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "electron": "44.7.0",
+    "chrome": "152.0.7977.130",
+    "devicePixelRatio": 1,
+    "locale": "en-GB",
+    "fontFamily": "Fira Code, Menlo, DejaVu Sans Mono, Consolas, monospace",
+    "fontSize": 14,
+    "themes": ["one-day-syntax", "one-day-ui"]
+  },
+  "viewport": { "width": 1100, "height": 720 },
+  "cornerRadius": 10,
+  "sources": {
+    "editor": {
+      "revision": "385bd1b3ac2db600f1c7e077474d9da4d6deebc4",
+      "dirty": true,
+      "workingTreeHash": "0fa935626a1db13861a0b78ef5c3d890e0a6bff80b25da2fac6e9889910defe0"
+    },
+    "package": {
+      "revision": "4e832fa669175e357a2f217df87adae7a10ddb51",
+      "dirty": true,
+      "workingTreeHash": "fceecae4e86a328484fd6aff9d9080134c4b76247e042cbe05ef1ed7bf03ad67"
+    },
+    "fuzzy-workspace": {
+      "revision": "4e832fa669175e357a2f217df87adae7a10ddb51",
+      "dirty": true,
+      "workingTreeHash": "fceecae4e86a328484fd6aff9d9080134c4b76247e042cbe05ef1ed7bf03ad67"
+    },
+    "one-theme": {
+      "revision": "14a69683b0e3238e2bc128fbfae3866c1e4ee9c6",
+      "dirty": true,
+      "workingTreeHash": "50ec2f83a6347dd8113870992ec4eb2be4014f3d9e12213c2f51b543f1eca793"
+    }
+  },
+  "fixtures": [
+    {
+      "file": "signal.js",
+      "sha256": "2a36953daadd1ae53070d0ff7ceab4624395fdb957104aa6e8ec92d785cadf1d"
+    }
+  ],
   "images": [
     {
       "file": "demo.png",
       "label": "Switch between files open in the workspace.",
       "width": 1100,
-      "height": 720
+      "height": 720,
+      "sha256": "f9869132290b0360fa37ace39dd926e729f104b8a9a561dc75fc9bb284a43677"
     }
   ]
 }
