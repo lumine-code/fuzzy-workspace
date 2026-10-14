@@ -30,7 +30,6 @@ Commands available in `.fuzzy-workspace`:
 
 - `fuzzy-workspace:focus-selected-item`: focus the selected item, revealing its dock and pane,
 - `fuzzy-workspace:open-selected-with`: choose an opener for the selected saved local file,
-- `fuzzy-workspace:open-selected-pending`: open that file as a pending text editor,
 - `fuzzy-workspace:open-selected-external`: open that file in its external application,
 - `fuzzy-workspace:show-selected-in-folder`: reveal that file in the system file manager,
 - `fuzzy-workspace:close-selected-item`: close the selected item without leaving the list,
