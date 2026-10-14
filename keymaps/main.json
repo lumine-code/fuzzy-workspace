@@ -6,8 +6,18 @@
     "cmdorctrl-alt-p": "fuzzy-workspace:toggle"
   },
   ".fuzzy-workspace lumine-text-editor[mini]": {
+    "alt-enter": "fuzzy-workspace:open-selected-with",
+    "shift-enter": "fuzzy-workspace:open-selected-pending",
+    "ctrl-alt-enter": "fuzzy-workspace:open-selected-external",
+    "ctrl-shift-enter": "fuzzy-workspace:show-selected-in-folder",
     "alt-delete": "fuzzy-workspace:close-selected-item",
     "alt-c": "fuzzy-workspace:copy-selected-path",
     "alt-s": "fuzzy-workspace:query-selection"
+  },
+  ".fuzzy-workspace .select-list": {
+    "alt-enter": "fuzzy-workspace:open-selected-with",
+    "shift-enter": "fuzzy-workspace:open-selected-pending",
+    "ctrl-alt-enter": "fuzzy-workspace:open-selected-external",
+    "ctrl-shift-enter": "fuzzy-workspace:show-selected-in-folder"
   }
 }
