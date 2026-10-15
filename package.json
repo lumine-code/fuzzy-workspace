@@ -56,7 +56,7 @@
     "prettier": "^3.9.9"
   },
   "specPackages": [
-    "open-with",
+    "launcher",
     "open-external"
   ]
 }

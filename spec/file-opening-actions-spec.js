@@ -48,11 +48,11 @@ describe("fuzzy-workspace saved file alternatives", () => {
   }
 
   it("opens the chooser for the selected file in the pane captured when the list opened", async () => {
-    await lumine.packages.deactivatePackage("open-with");
+    await lumine.packages.deactivatePackage("launcher");
     const choose = jasmine.createSpy("choose opener");
     leases.add(
       lumine.commands.add("lumine-workspace", {
-        "open-with:toggle": (event) => {
+        "launcher:open": (event) => {
           event.stopPropagation();
           choose(event.detail);
         },
