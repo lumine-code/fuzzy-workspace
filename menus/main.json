@@ -7,7 +7,7 @@
           "label": "Fuzzy Workspace",
           "submenu": [
             {
-              "label": "Toggle",
+              "label": "Find Open Item…",
               "command": "fuzzy-workspace:toggle"
             }
           ]
