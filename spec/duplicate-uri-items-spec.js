@@ -71,7 +71,7 @@ describe("Fuzzy Workspace views of the same file", () => {
     await main.ensureSelectList().show();
     const item = main.selectList.getItems()[0];
     await main.selectList.recordRecentItem(item);
-    expect(main.serialize().recentlyUsed).toEqual([editor.getURI()]);
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([editor.getURI()]);
   });
 
   it("persists the file URI and keeps the other view reachable after closing one view", async () => {
@@ -88,7 +88,7 @@ describe("Fuzzy Workspace views of the same file", () => {
     if (!item) return;
     const id = main.selectList.getItemId(item);
     await main.selectList.recordRecentItem(item);
-    expect(main.serialize().recentlyUsed).toEqual([first.getURI()]);
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([first.getURI()]);
     await main.performAction("close", {
       item: main.selectList.getItems().find((entry) => entry.paneItem === first),
     });
@@ -96,7 +96,7 @@ describe("Fuzzy Workspace views of the same file", () => {
     expect(remaining.length).toBe(1);
     expect(remaining[0].paneItem).toBe(second);
     expect(main.selectList.getItemId(remaining[0])).toBe(id);
-    expect(main.serialize().recentlyUsed).toEqual([second.getURI()]);
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([second.getURI()]);
     await main.selectList.selectItem(remaining[0]);
     await main.selectList.runAction("fuzzy-workspace:focus-selected-item");
     expect(lumine.workspace.getActiveTextEditor()).toBe(second);
@@ -111,6 +111,6 @@ describe("Fuzzy Workspace views of the same file", () => {
     const items = main.selectList.getItems();
     expect(items.length).toBe(2);
     expect(new Set(items.map((item) => main.selectList.getItemId(item))).size).toBe(2);
-    expect(main.serialize().recentlyUsed).toEqual([]);
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([]);
   });
 });

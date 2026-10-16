@@ -57,7 +57,7 @@ describe("fuzzy-workspace recent items", () => {
     await selectList.runAction("fuzzy-workspace:focus-selected-item");
 
     expect(main.recentlyUsed).toEqual([alpha]);
-    expect(main.serialize()).toEqual({ recentlyUsed: [alpha] });
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([alpha]);
     expect(open).toHaveBeenCalledWith(item.paneItem, { searchAllPanes: true });
   });
 
@@ -158,5 +158,18 @@ describe("fuzzy-workspace recent items", () => {
 
     expect(main.recentlyUsed).toEqual([]);
     expect(selectList.getElement().querySelector(".select-list-separator")).toBeNull();
+  });
+  it("projects stored history changes into the existing list and persists the next use", async () => {
+    await showList();
+    const list = main.selectList;
+    const restored = beta;
+    await main.workspaceState.update("recentlyUsed", [restored]);
+    expect(main.selectList).toBe(list);
+    expect(list.getRecentItemIds()).toEqual([restored]);
+    await list.recordRecentItem(itemFor(alpha));
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([
+      list.getItemId(itemFor(alpha)),
+      restored,
+    ]);
   });
 });

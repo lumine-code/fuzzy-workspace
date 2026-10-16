@@ -40,7 +40,7 @@ describe("Fuzzy Workspace live item actions", () => {
     expect(item.uri).not.toBe(editor.getURI());
     await main.selectList.runAction("fuzzy-workspace:copy-selected-path");
     expect(lumine.clipboard.write).toHaveBeenCalledOnceWith(editor.getURI());
-    expect(main.serialize().recentlyUsed).toEqual([editor.getURI()]);
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([editor.getURI()]);
     expect(main.selectList.getRecentItemIds()).toEqual([editor.getURI()]);
   });
 
