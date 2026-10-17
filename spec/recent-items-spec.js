@@ -32,6 +32,27 @@ describe("fuzzy-workspace recent items", () => {
     return main.selectList;
   }
 
+  it("keeps the query and selected row without loading again when recent history changes", async () => {
+    const list = await showList();
+    list.setQuery("txt");
+    await lumine.views.getNextUpdatePromise();
+    const item = itemFor(beta);
+    await list.selectItem(item);
+    const reload = spyOn(list, "reload").and.callThrough();
+    const load = spyOn(main, "listSnapshot").and.callThrough();
+    const loading = spyOn(list, "setLoadingState").and.callThrough();
+
+    await main.workspaceState.update("recentlyUsed", [alpha]);
+    await list.recordRecentItem(item);
+    await lumine.views.getNextUpdatePromise();
+
+    expect(list.getQuery()).toBe("txt");
+    expect(list.getSelectedItem()).toBe(item);
+    expect(reload).not.toHaveBeenCalled();
+    expect(load).not.toHaveBeenCalled();
+    expect(loading).not.toHaveBeenCalled();
+  });
+
   function itemFor(uri) {
     return main.items.find((item) => item.uri === uri);
   }
