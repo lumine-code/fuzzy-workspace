@@ -59,4 +59,62 @@ describe("Fuzzy Workspace live item actions", () => {
     await main.selectList.runAction("fuzzy-workspace:copy-selected-path");
     expect(lumine.clipboard.write).toHaveBeenCalledOnceWith(editor.getURI());
   });
+
+  it("refreshes active rows after repeated focus without losing query, selection or recents", async () => {
+    host.hide();
+    const otherFile = path.join(scratch, "other.txt");
+    fs.writeFileSync(otherFile, "other text\n");
+    const other = await lumine.workspace.open(otherFile);
+    await host.show();
+    const list = host.getModel();
+    await list.setQuery(".txt");
+    await list.runAction("select-list:toggle-keep-open");
+    const recents = [];
+
+    for (const target of [editor, other]) {
+      await list.selectItem(list.getItems().find((row) => row.paneItem === target));
+      await list.confirmSelection();
+      recents.unshift(target.getURI());
+
+      expect(host.isVisible()).toBe(true);
+      expect(list.getQuery()).toBe(".txt");
+      expect(list.getSelectedItem().paneItem).toBe(target);
+      expect(list.getRecentItemIds().slice(0, recents.length)).toEqual(recents);
+      const rows = list.getElement().querySelectorAll('[role="option"]');
+      for (const [index, entry] of list.getDisplayedItems().entries()) {
+        expect(rows[index].classList.contains("active-item")).toBe(
+          entry.pane.getActiveItem() === entry.paneItem,
+        );
+      }
+    }
+  });
+
+  it("does not refresh a newer picker after an older accepted focus finishes", async () => {
+    const list = host.getModel();
+    await list.runAction("select-list:toggle-keep-open");
+    let release, entered;
+    const gate = new Promise((resolve) => (release = resolve));
+    const started = new Promise((resolve) => (entered = resolve));
+    const open = lumine.workspace.open.bind(lumine.workspace);
+    spyOn(lumine.workspace, "open").and.callFake(async (...args) => {
+      if (args[0] === editor) {
+        entered();
+        await gate;
+      }
+      return open(...args);
+    });
+    const focusing = list.runAction("fuzzy-workspace:focus-selected-item");
+    await started;
+    host.hide();
+    await host.show();
+    await list.setQuery("new session query");
+    const reload = spyOn(list, "reload").and.callThrough();
+
+    release();
+    await focusing;
+
+    expect(reload).not.toHaveBeenCalled();
+    expect(host.isVisible()).toBe(true);
+    expect(list.getQuery()).toBe("new session query");
+  });
 });
