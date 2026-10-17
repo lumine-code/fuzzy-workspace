@@ -102,6 +102,30 @@ describe("Fuzzy Workspace views of the same file", () => {
     expect(lumine.workspace.getActiveTextEditor()).toBe(second);
   });
 
+  it("keeps the selected duplicate view recent after its file URI is committed", async () => {
+    const first = await openFile();
+    const second = (
+      await lumine.workspace.copyPaneItem(first, {
+        sourcePane: lumine.workspace.paneForItem(first),
+        splitDirection: "right",
+      })
+    ).pane.getActiveItem();
+    await main.ensureSelectList().show();
+    const item = main.selectList.getItems().find((entry) => entry.paneItem === second);
+    const id = main.selectList.getItemId(item);
+
+    await main.selectList.recordRecentItem(item);
+
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([first.getURI()]);
+    expect(main.selectList.getRecentItemIds()).toEqual([id]);
+    expect(main.selectList.isRecentItem(item)).toBe(true);
+    expect(
+      main.selectList.isRecentItem(
+        main.selectList.getItems().find((entry) => entry.paneItem === first),
+      ),
+    ).toBe(false);
+  });
+
   it("keeps distinct untitled editors reachable", async () => {
     const first = await lumine.workspace.open();
     const pane = lumine.workspace.paneForItem(first);
