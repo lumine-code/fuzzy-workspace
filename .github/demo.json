@@ -1,9 +1,9 @@
 {
   "title": "fuzzy-workspace",
   "description": "Switch between files open in the workspace.",
-  "recordedOn": "2026-10-14",
-  "sourceRevision": "428526495d1219f7ab01a29bad4d68c898e7ed7c",
-  "themeSourceRevision": "a673daf5882dc988419316d144a9bbe0aec9cb53",
+  "recordedOn": "2026-10-18",
+  "sourceRevision": "864702fc5b4c5ca29637693bf55ccdbb602f8588",
+  "themeSourceRevision": "45b22049e87256e9327beb0b350e67fe81d7fc81",
   "mode": "normal",
   "fontSettings": "default",
   "scenario": "demo.js",
@@ -11,8 +11,8 @@
   "environment": {
     "platform": "win32",
     "arch": "x64",
-    "electron": "44.7.1",
-    "chrome": "152.0.7977.149",
+    "electron": "44.9.0",
+    "chrome": "152.0.7977.167",
     "devicePixelRatio": 1,
     "locale": "en-GB",
     "fontFamily": "Fira Code, Menlo, DejaVu Sans Mono, Consolas, monospace",
@@ -24,24 +24,24 @@
   "privacy": { "version": 1, "location": "neutral", "textChecked": true },
   "sources": {
     "editor": {
-      "revision": "b3fcd05714f72e3aa88498c47334a04de2c51afa",
-      "dirty": true,
-      "workingTreeHash": "b83140dc0b2863be081113231aec9ccbed9525566ea48dc135cdd3c725bd1985"
+      "revision": "10950c83cb6d964aadbcf4036af67c6484c1341d",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "package": {
-      "revision": "428526495d1219f7ab01a29bad4d68c898e7ed7c",
-      "dirty": true,
-      "workingTreeHash": "e06354f226961170520bc191010f45bc69426704f14a385355239d06ab8ff306"
+      "revision": "864702fc5b4c5ca29637693bf55ccdbb602f8588",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "fuzzy-workspace": {
-      "revision": "428526495d1219f7ab01a29bad4d68c898e7ed7c",
-      "dirty": true,
-      "workingTreeHash": "e06354f226961170520bc191010f45bc69426704f14a385355239d06ab8ff306"
+      "revision": "864702fc5b4c5ca29637693bf55ccdbb602f8588",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "one-theme": {
-      "revision": "a673daf5882dc988419316d144a9bbe0aec9cb53",
-      "dirty": true,
-      "workingTreeHash": "e06354f226961170520bc191010f45bc69426704f14a385355239d06ab8ff306"
+      "revision": "45b22049e87256e9327beb0b350e67fe81d7fc81",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     }
   },
   "fixtures": [
@@ -56,7 +56,7 @@
       "label": "Switch between files open in the workspace.",
       "width": 1100,
       "height": 720,
-      "sha256": "f77cba88fabc53476e76b12e473f17913eb5ce3d1ca4a71580ab7ceb3651e53d"
+      "sha256": "f367f4c926ddc0db446e47d4d56ed3a5411a4f809dab791ba6ec723f8f50c97c"
     }
   ]
 }
