@@ -101,8 +101,7 @@ describe("fuzzy-workspace", () => {
       });
 
       list.getElement();
-      list.getQueryEditor().setText("unt");
-      await lumine.views.getNextUpdatePromise();
+      await list.setQuery("unt");
 
       const matched = list.getElement().querySelectorAll(".character-match");
       expect(matched.length).toBeGreaterThan(0);
